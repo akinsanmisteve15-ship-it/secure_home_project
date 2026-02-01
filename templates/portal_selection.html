@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>eClear | Partner Portal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* Local overrides to maintain the specific grid layout */
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 100px 20px; /* Space for the fixed nav */
+        }
+
+        .header-section { text-align: center; margin-bottom: 50px; }
+        h1 { font-weight: 700; font-size: 42px; letter-spacing: -2px; margin: 0; }
+        p { color: #86868b; margin-top: 10px; font-size: 19px; }
+
+        .provider-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 280px); 
+            gap: 25px; 
+            justify-content: center;
+        }
+
+        .provider-card {
+            background: var(--card);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 45px 20px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Using your custom cubic-bezier for the hover lift too */
+        .provider-card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-8px); 
+            transition: 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95); 
+        }
+
+        .provider-card i { width: 44px; height: 44px; margin-bottom: 22px; color: var(--accent); }
+        .provider-card h3 { margin: 0; font-size: 20px; font-weight: 600; }
+
+        .back-btn {
+            margin-top: 60px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="header-nav">
+        <a href="/" class="logo-link">
+            <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
+            <span class="brand-text">eClear</span>
+        </a>
+        <div class="mode-switch" onclick="toggleTheme()">Appearance</div>
+    </nav>
+
+    <div class="header-section">
+        <h1>Partner with eClear</h1>
+        <p>Select your business category to get started.</p>
+    </div>
+
+    <div class="provider-grid">
+        <a href="/portal/register?role=real_estate" class="provider-card">
+            <i data-lucide="building-2"></i>
+            <h3>Real Estate</h3>
+        </a>
+
+        <a href="/portal/register?role=logistics" class="provider-card">
+            <i data-lucide="truck"></i>
+            <h3>Logistics</h3>
+        </a>
+
+        <a href="/portal/register?role=vendor" class="provider-card">
+            <i data-lucide="utensils-crosses"></i>
+            <h3>Restaurants</h3>
+        </a>
+
+        <a href="/portal/register?role=car_hire" class="provider-card">
+            <i data-lucide="key"></i>
+            <h3>Rent Your Vehicle</h3>
+        </a>
+
+        <a href="/portal/register?role=pro" class="provider-card">
+            <i data-lucide="briefcase"></i>
+            <h3>Services & Pros</h3>
+        </a>
+    </div>
+
+    <a href="/" class="back-btn">← Back to Guest View</a>
+
+    <script>
+        lucide.createIcons();
+        
+        function toggleTheme() {
+            const root = document.documentElement;
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+        }
+
+        // Auto-detect system preference on first load
+        if (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+</html>

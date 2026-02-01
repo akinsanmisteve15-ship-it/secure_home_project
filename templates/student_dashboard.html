@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>eClear | Student Dashboard</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 120px auto;
+            padding: 0 20px;
+        }
+        .main-col, .side-col { display: flex; flex-direction: column; gap: 25px; }
+    </style>
+</head>
+<body>
+
+    <nav class="header-nav">
+        <a href="/" class="logo-link">
+            <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
+            <span class="brand-text">eClear</span>
+        </a>
+        <div class="mode-switch" onclick="toggleTheme()">Appearance</div>
+    </nav>
+
+    <main class="dashboard-grid">
+        <div class="main-col">
+            <h1 class="hero-title" style="font-size: 48px; text-align: left; margin: 0;">Dashboard</h1>
+            
+            <div class="service-grid" style="grid-template-columns: repeat(2, 1fr); width: 100%;">
+                <div class="service-card">
+                    <i data-lucide="home"></i>
+                    <h3>My Residence</h3>
+                </div>
+                <div class="service-card">
+                    <i data-lucide="package"></i>
+                    <h3>Deliveries</h3>
+                </div>
+            </div>
+
+            <div class="provider-card" style="text-align: left; height: 300px;">
+                <h3>Recent Activity</h3>
+            </div>
+        </div>
+
+        <div class="side-col">
+            <div class="provider-card">
+                <h3>Quick Actions</h3>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        function toggleTheme() {
+            const root = document.documentElement;
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+        }
+    </script>
+</body>
+</html>

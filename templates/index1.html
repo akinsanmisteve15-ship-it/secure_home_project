@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eClear | Welcome</title>
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <nav class="header-nav">
+        <div class="logo-link">
+            <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
+            <span class="brand-text">eClear</span>
+        </div>
+        <div class="mode-switch" onclick="toggleTheme()">Appearance</div>
+    </nav>
+
+    <main class="hero">
+        <h1 class="hero-title">Everything you need.</h1>
+        <p class="hero-subtitle">The all-in-one ecosystem for student living, logistics, and real estate.</p>
+        
+        <div class="service-grid">
+            <a href="/dashboard" class="service-card">
+                <i data-lucide="graduation-cap"></i>
+                <h3>Students</h3>
+            </a>
+            <a href="/portal-selection" class="service-card">
+                <i data-lucide="building"></i>
+                <h3>Real Estate</h3>
+            </a>
+            <a href="/portal-selection" class="service-card">
+                <i data-lucide="truck"></i>
+                <h3>Logistics</h3>
+            </a>
+            <a href="/portal-selection" class="service-card">
+                <i data-lucide="utensils"></i>
+                <h3>Food</h3>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Start Icons
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const root = document.documentElement;
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Apply Preference on Load
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</body>
+
+</html>
