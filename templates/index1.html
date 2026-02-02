@@ -1,66 +1,180 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eClear | Welcome</title>
-    
     <link rel="stylesheet" href="/static/css/style.css">
-
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body id="main-body">
+
+    <div id="global-cinematic-container">
+        <video id="global-video" muted loop playsinline preload="auto"></video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <div id="ambient-bg"></div>
 
     <nav class="header-nav">
-        <div class="logo-link">
-            <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
-            <span class="brand-text">eClear</span>
+        <div class="nav-left">
+            <div class="logo-link">
+                <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
+                <span class="brand-text">eClear</span>
+            </div>
         </div>
-        <div class="mode-switch" onclick="toggleTheme()">Appearance</div>
+        
+        <div class="nav-center">
+            <div class="toggle-container">
+                <input type="radio" id="demand" name="market-side" value="demand" checked onchange="switchView('demand')">
+                <label for="demand">Demand</label>
+                <input type="radio" id="supply" name="market-side" value="supply" onchange="switchView('supply')">
+                <label for="supply">Supply</label>
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="/portal/register" class="signup-btn">Sign Up</a>
+        </div>
     </nav>
 
     <main class="hero">
-        <h1 class="hero-title">Everything you need.</h1>
-        <p class="hero-subtitle">The all-in-one ecosystem for student living, logistics, and real estate.</p>
-        
-        <div class="service-grid">
-            <a href="/dashboard" class="service-card">
-                <i data-lucide="graduation-cap"></i>
-                <h3>Students</h3>
-            </a>
-            <a href="/portal-selection" class="service-card">
-                <i data-lucide="building"></i>
-                <h3>Real Estate</h3>
-            </a>
-            <a href="/portal-selection" class="service-card">
-                <i data-lucide="truck"></i>
-                <h3>Logistics</h3>
-            </a>
-            <a href="/portal-selection" class="service-card">
-                <i data-lucide="utensils"></i>
-                <h3>Food</h3>
-            </a>
+        <div id="view-demand" class="view-content active">
+            <h1 class="hero-title">Everything you need.</h1>
+            <p class="hero-subtitle">The all-in-one ecosystem for student living and real estate.</p>
+            
+            <div class="service-grid">
+                
+                
+                <a href="real-estate.html" class="card-link-wrapper">
+    <div class="service-card cinematic-trigger" 
+         data-theme="realestate" 
+         data-video="/static/videos/realestate_bg.mp4"
+         onmouseenter="startCinematic(this)" 
+         onmouseleave="stopCinematic()" 
+         onmousemove="handleShimmer(event, this)">
+        <div class="shimmer"></div>
+        <div class="card-main-content">
+            <i data-lucide="building"></i>
+            <h3>Real Estate</h3>
+        </div>
+    </div>
+</a>
+
+                <div class="service-card cinematic-trigger" 
+                     data-theme="logistics" 
+                     data-video="/static/videos/logistics_car.webm"
+                     onmouseenter="startCinematic(this)" 
+                     onmouseleave="stopCinematic()" 
+                     onmousemove="handleShimmer(event, this)">
+                    <div class="shimmer"></div>
+                    <div class="card-content">
+                        <i data-lucide="car"></i>
+                        <h3>Hire a Car</h3>
+                    </div>
+                </div>
+
+                <a href="food.html" class="card-link-wrapper">
+                    <div class="service-card cinematic-trigger" 
+                         data-theme="food" 
+                         data-video="/static/videos/food_taco.mp4"
+                         onmouseenter="startCinematic(this)" 
+                         onmouseleave="stopCinematic()" 
+                         onmousemove="handleShimmer(event, this)">
+                        <div class="shimmer"></div>
+                        <div class="card-content">
+                            <i data-lucide="utensils"></i>
+                            <h3>Food</h3>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <div id="view-supply" class="view-content">
+            <h1 class="hero-title">Provider Portal.</h1>
+            <p class="hero-subtitle">Manage inventory and scale your eClear business.</p>
+            <div class="service-grid">
+                <a href="/portal-selection" class="card-link-wrapper">
+                    <div class="service-card" data-theme="inventory" onmouseenter="setTheme(this)" onmouseleave="resetTheme()" onmousemove="handleShimmer(event, this)">
+                        <div class="shimmer"></div>
+                        <i data-lucide="layout-grid"></i>
+                        <h3>Inventory</h3>
+                    </div>
+                </a>
+                <div class="service-card" data-theme="payouts" onmouseenter="setTheme(this)" onmouseleave="resetTheme()" onmousemove="handleShimmer(event, this)">
+                    <div class="shimmer"></div>
+                    <i data-lucide="wallet"></i>
+                    <h3>Payouts</h3>
+                </div>
+            </div>
         </div>
     </main>
 
     <script>
-        // Start Icons
         lucide.createIcons();
 
-        // Theme Toggle Logic
-        function toggleTheme() {
-            const root = document.documentElement;
-            const currentTheme = root.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const globalVideo = document.getElementById('global-video');
+        const body = document.body;
+
+        function startCinematic(card) {
+            const videoPath = card.getAttribute('data-video');
+            setTheme(card);
             
-            root.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            if (globalVideo && videoPath) {
+                // Swap source only if it's a different video
+                if (!globalVideo.src.includes(videoPath)) {
+                    globalVideo.src = videoPath;
+                    globalVideo.load();
+                }
+                
+                body.classList.add('cinematic-active');
+                globalVideo.currentTime = 0;
+                globalVideo.play();
+                
+                // Snappy start then normalize
+                globalVideo.playbackRate = 2.5; 
+                setTimeout(() => {
+                    if (body.classList.contains('cinematic-active')) {
+                        globalVideo.playbackRate = 1.0; // Back to normal speed
+                    }
+                }, 400); 
+            }
         }
 
-        // Apply Preference on Load
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        function stopCinematic() {
+            resetTheme();
+            body.classList.remove('cinematic-active');
+            if (globalVideo) {
+                globalVideo.pause();
+            }
+        }
+
+        function setTheme(card) {
+            const theme = card.getAttribute('data-theme');
+            body.setAttribute('data-active-theme', theme);
+        }
+
+        function resetTheme() {
+            body.removeAttribute('data-active-theme');
+        }
+
+        function switchView(view) {
+            document.getElementById('view-demand').classList.toggle('active', view === 'demand');
+            document.getElementById('view-supply').classList.toggle('active', view === 'supply');
+        }
+
+        function handleShimmer(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const shimmer = card.querySelector('.shimmer');
+            if (shimmer) {
+                shimmer.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, transparent 80%)`;
+            }
+        }
     </script>
 </body>
-
 </html>

@@ -1,106 +1,44 @@
 /* =========================================
-   1. CORE THEME & VARIABLES
+   1. SYSTEM-DRIVEN THEME
    ========================================= */
-:root[data-theme="light"] { 
-    --bg: #f5f5f7; 
-    --card: rgba(255, 255, 255, 0.7); 
-    --text: #1d1d1f; 
-    --border: #d2d2d7; 
-    --accent: #0071e3; 
-    --accent-rgb: 0, 113, 227; /* For breathing transparency */
-    --hero-gradient: linear-gradient(180deg, #1d1d1f 0%, #86868b 100%);
+:root {
+    --bg: #ffffff;
+    --bg-rgb: 255, 255, 255;
+    --text: #1d1d1f;
+    --card: rgba(0, 0, 0, 0.04);
+    --border: rgba(0, 0, 0, 0.1);
+    --accent: #0071e3;
+    --theme-color: transparent;
 }
 
-:root[data-theme="dark"] { 
-    --bg: #000000; 
-    --card: rgba(28, 28, 30, 0.8); /* Slightly more solid to pop against the beam */
-    --text: #ffffff; /* Pure white for maximum clarity */
-    --border: #38383a; 
-    --accent: #0a84ff; 
-    --beam-opacity: 0.6;
-    --beam-color: radial-gradient(circle, #4a0000 0%, #000033 40%, #050505 70%, transparent 100%);
-    --hero-gradient: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #000000;
+        --bg-rgb: 0, 0, 0;
+        --text: #ffffff;
+        --card: rgba(255, 255, 255, 0.08);
+        --border: rgba(255, 255, 255, 0.15);
+        --accent: #0a84ff;
+    }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* =========================================
-  /* =========================================
-  /* =========================================
-   /* =========================================
-   2. THE LIQUID RAINBOW (Always Alive)
-   ========================================= */
-
-@keyframes liquidRadiate {
-    0% {
-        transform: translate(-50%, -50%) scale(0.2);
-        opacity: 0;
-    }
-    20% { opacity: var(--beam-opacity); }
-    50% {
-        /* Subtle "shiver" in the dark mass */
-        transform: translate(-49%, -51%) scale(1.1);
-        opacity: var(--beam-opacity);
-    }
-    80% { opacity: var(--beam-opacity); }
-    100% {
-        transform: translate(-50%, -50%) scale(2.0);
-        opacity: 0;
-    }
-}
-
-body::before, body::after {
-    content: "";
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 150vh; /* Wider for full desktop coverage */
-    height: 150vh;
-    z-index: -1;
-    pointer-events: none;
-    border-radius: 50%;
-    filter: blur(140px); /* Deep blur for smooth color bleeding */
-    transform: translate(-50%, -50%);
-    animation: liquidRadiate 16s cubic-bezier(0.2, 0, 0.4, 1) infinite;
-}
-
-body::after {
-    animation-delay: -8s;
-}
-
-/* --- THEME SPECIFIC COLORS --- */
-
-/* Light Mode: Sweet Rainbow Shades */
-:root[data-theme="light"] {
-    --beam-opacity: 0.4;
-    --beam-color: radial-gradient(circle, #84ffe6 0%, #a084ff 30%, #0071e3 70%, transparent 100%);
-}
-:root[data-theme="light"] body::before, 
-:root[data-theme="light"] body::after {
-    background: var(--beam-color);
-    mix-blend-mode: multiply;
-}
-
-/* Dark Mode: Deep Maroon, Dark Blue & Black */
-:root[data-theme="dark"] {
-    --beam-opacity: 0.6; /* Increased opacity because the colors themselves are dark */
-    /* Deep Maroon (#4a0000) into Midnight Blue (#000033) into Black */
-    --beam-color: radial-gradient(circle, 
-        #4a0000 0%, 
-        #000033 40%, 
-        #050505 70%, 
-        transparent 100%);
-}
-:root[data-theme="dark"] body::before, 
-:root[data-theme="dark"] body::after {
-    background: var(--beam-color);
-    /* 'Difference' or 'Exclusion' would be too bright, 'Overlay' keeps it moody */
-    mix-blend-mode: overlay; 
-}
-/* =========================================
-   3. NAVIGATION (eClear LOGO)
+   2. HEADER & NAVIGATION (Updated)
    ========================================= */
 .header-nav {
     width: 100%;
-    padding: 20px 5%;
+    height: 70px;
+    padding: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -108,165 +46,197 @@ body::after {
     top: 0;
     left: 0;
     z-index: 1000;
+    background: rgba(var(--bg-rgb), 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
 }
 
-.logo-link {
+.nav-left, .nav-right {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: var(--text);
-    transition: transform 0.4s ease;
 }
 
-.logo-link:hover { transform: scale(1.02); }
-.brand-icon { height: 32px; width: auto; object-fit: contain; }
-.brand-text { font-weight: 700; font-size: 22px; letter-spacing: -1px; }
+.nav-center {
+    display: flex;
+    justify-content: center;
+    flex: 0; /* Keeps toggle at its intrinsic width */
+}
 
-.mode-switch {
-    cursor: pointer;
-    font-size: 11px;
+.nav-right {
+    justify-content: flex-end;
+}
+
+/* Logo & Links */
+.logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.brand-icon { height: 26px; width: auto; }
+.brand-text { font-weight: 700; font-size: 20px; }
+
+/* Toggle System */
+.toggle-container {
+    position: relative; display: flex; width: 180px; height: 36px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 3px;
+}
+
+.toggle-container input { display: none; }
+.toggle-container label {
+    flex: 1; z-index: 2; cursor: pointer; font-size: 12px; font-weight: 600;
+    text-align: center; line-height: 30px; transition: 0.3s;
+}
+
+.toggle-slider {
+    position: absolute; top: 3px; left: 3px;
+    width: calc(50% - 3px); height: calc(100% - 6px);
+    background: var(--accent); border-radius: 18px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+}
+
+#supply:checked ~ .toggle-slider { transform: translateX(100%); }
+#demand:checked ~ label[for="demand"], #supply:checked ~ label[for="supply"] { color: #fff; }
+
+/* Sign Up Button */
+.signup-btn {
+    text-decoration: none;
+    background: var(--accent);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 12px;
+    font-size: 14px;
     font-weight: 600;
-    padding: 8px 18px;
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    background: var(--card);
-    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 113, 227, 0.4);
 }
 
 /* =========================================
-   4. HERO & CONTENT LAYOUT
+   3. HERO & GRID
    ========================================= */
-.hero {
+.hero { max-width: 1000px; margin: 120px auto; padding: 0 20px; perspective: 1200px; }
+.hero-title { font-size: 48px; font-weight: 800; text-align: center; margin-bottom: 10px; transition: 0.6s; }
+.hero-subtitle { color: #86868b; text-align: center; margin-bottom: 50px; font-size: 18px; transition: 0.6s; }
+
+.view-content { display: none; opacity: 0; transform: scale(0.98); transition: 0.4s; }
+.view-content.active { display: block; opacity: 1; transform: scale(1); }
+
+.service-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+    transform-style: preserve-3d;
+}
+
+.card-link-wrapper { text-decoration: none; color: inherit; display: block; transform-style: preserve-3d; }
+
+.service-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 24px;
+    padding: 40px 20px; text-align: center; position: relative; overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.4s, opacity 0.6s, filter 0.6s;
+    cursor: pointer;
+    min-height: 200px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-5px) translateZ(20px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border-color: var(--accent);
+}
+
+.shimmer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+.service-card i { font-size: 42px; color: var(--accent); display: block; margin-bottom: 15px; transition: 0.4s ease; }
+.service-card h3 { font-size: 18px; color: var(--text); transition: 0.4s ease; }
+
+/* Back Link (Subpages) */
+.back-link {
+    display: inline-flex; align-items: center; text-decoration: none;
+    color: var(--text); opacity: 0.6; font-size: 14px; font-weight: 500;
+    margin-bottom: 20px; transition: opacity 0.3s;
+}
+.back-link:hover { opacity: 1; }
+.back-link i { width: 18px; height: 18px; margin-right: 5px; }
+
+/* =========================================
+   4. GLOBAL CINEMATIC & THEME ENGINE
+   ========================================= */
+body[data-active-theme="realestate"] { --theme-color: rgba(52, 199, 89, 0.15); }
+body[data-active-theme="logistics"] { --theme-color: rgba(255, 159, 10, 0.25); }
+body[data-active-theme="food"] { --theme-color: rgba(255, 55, 95, 0.15); }
+
+#ambient-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, var(--theme-color) 0%, transparent 70%);
+    transition: background 0.8s ease; z-index: -1; pointer-events: none;
+}
+
+#global-cinematic-container {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -2; opacity: 0; background: #000;
+    transition: opacity 0.8s ease-in-out; pointer-events: none;
+}
+
+#global-video {
+    width: 100%; height: 100%; object-fit: cover;
+    transform: scale(1.2); transition: transform 3s cubic-bezier(0.1, 0, 0.2, 1);
+}
+
+.video-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+}
+
+body.cinematic-active #global-cinematic-container { opacity: 1; }
+body.cinematic-active #global-video { transform: scale(1.0); }
+
+body.cinematic-active .hero-title, 
+body.cinematic-active .hero-subtitle,
+body.cinematic-active .service-card:not(.cinematic-trigger) {
+    opacity: 0.1; filter: blur(12px);
+}
+/* =========================================
+   5. SUPPLY PORTAL THEMES (Add to Existing)
+   ========================================= */
+body[data-active-theme="inventory"] { --theme-color: rgba(94, 92, 230, 0.15); } /* Purple tint */
+body[data-active-theme="payouts"] { --theme-color: rgba(255, 214, 10, 0.15); }  /* Gold tint */
+
+/* Ensure service grid is responsive on smaller screens while maintaining desktop layout */
+@media (max-width: 768px) {
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-title {
+        font-size: 36px;
+    }
+}
+
+/* Local Badge for Role Specific Pages */
+.role-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--accent);
+    color: white;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* Ensure the card-main-content fills the card for alignment */
+.card-main-content, .card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 140px 20px 60px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    z-index: 2;
 }
 
-.hero-title {
-    font-size: 64px;
-    font-weight: 700;
-    letter-spacing: -3px;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    background: var(--hero-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.hero-subtitle {
-    font-size: 20px;
-    color: #86868b;
-    max-width: 600px;
-    margin-bottom: 60px;
-}
-
-.service-grid, .provider-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, 240px); 
-    gap: 25px; 
-    justify-content: center;
-    width: 100%;
-    max-width: 1100px;
-}
-
-.service-card, .provider-card, .glass-card {
-    background: var(--card);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--border);
-    border-radius: 28px;
-    padding: 40px 20px;
-    text-align: center;
-    text-decoration: none;
-    color: inherit;
-    transition: 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-}
-
-.service-card:hover, .provider-card:hover { 
-    border-color: var(--accent); 
-    transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.85);
-}
-
-:root[data-theme="dark"] .service-card:hover, 
-:root[data-theme="dark"] .provider-card:hover {
-    background: rgba(44, 44, 46, 0.85);
-}
-
-.service-card i, .provider-card i { 
-    width: 35px; height: 35px; 
-    margin-bottom: 15px; 
-    color: var(--accent); 
-}
-
-/* =========================================
-   5. REGISTRATION & FOOTER
-   ========================================= */
-.glass-card {
-    width: 100%;
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 50px;
-}
-
-.primary-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: 15px;
-    border: none;
-    background: var(--text);
-    color: var(--bg);
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: transform 0.2s ease;
-}
-
-.primary-btn:hover { transform: scale(1.02); }
-
-.switch-footer {
-    margin-top: 80px;
-    padding: 15px 35px;
-    background: var(--card);
-    border-radius: 50px;
-    border: 1px solid var(--border);
-    text-decoration: none;
-    color: var(--text);
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-}
-/* =========================================
-   6. GLOBAL DEFAULTS (The Text Link)
-   ========================================= */
-* { 
-    box-sizing: border-box; 
-    /* This makes the theme switch feel smooth and premium */
-    transition: background-color 2.3s ease, color 2.3s ease, border-color 2.3s ease;
-}
-
-body { 
-    margin: 0; 
-    background: var(--bg); 
-    color: var(--text); /* This forces the white text in Dark Mode */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* Ensure these elements specifically respect the white color in Dark Mode */
-.hero-subtitle, 
-.brand-text, 
-.service-card, 
-.provider-card, 
-.logo-link, 
-.switch-footer {
-    color: var(--text);
+/* Smooth transition for the ambient background */
+#ambient-bg {
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eClear | Real Estate</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body id="main-body" data-active-theme="realestate">
+
+    <div id="ambient-bg"></div>
+
+    <nav class="header-nav">
+        <div class="nav-left">
+            <a href="/" class="logo-link">
+                <img src="/static/images/logo.png" alt="eClear" class="brand-icon">
+                <span class="brand-text">eClear</span>
+            </a>
+        </div>
+        
+        <div class="toggle-container">
+            <input type="radio" id="demand" name="market-side" value="demand" checked>
+            <label for="demand">Demand</label>
+            <input type="radio" id="supply" name="market-side" value="supply">
+            <label for="supply">Supply</label>
+            <div class="toggle-slider"></div>
+        </div>
+
+        <div class="nav-right">
+            <a href="/portal/register" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <a href="/" class="back-link">
+            <i data-lucide="chevron-left"></i> Back to Home
+        </a>
+
+        <h1 class="hero-title">Find your space.</h1>
+        <p class="hero-subtitle">Select a category to explore available listings.</p>
+        
+        <div class="service-grid">
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="key"></i>
+                <h3>Renting</h3>
+            </div>
+
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="bed"></i>
+                <h3>Hostels</h3>
+            </div>
+
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="calendar-days"></i>
+                <h3>Shortlets</h3>
+            </div>
+
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="home"></i>
+                <h3>Buying</h3>
+            </div>
+
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="hotel"></i>
+                <h3>Hotels</h3>
+            </div>
+
+            <div class="service-card" data-theme="realestate" onmousemove="handleShimmer(event, this)">
+                <div class="shimmer"></div>
+                <i data-lucide="users"></i>
+                <h3>Sharing</h3>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function handleShimmer(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const shimmer = card.querySelector('.shimmer');
+            if (shimmer) {
+                shimmer.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, transparent 80%)`;
+            }
+        }
+    </script>
+</body>
+</html>
